@@ -631,25 +631,25 @@ Day 15:  Period locked in ERP
 
 ### Close Dependencies Map
 ```
-Bank Recs ──────────────────────────────────────────► Controller Review
-AR Rec ──────────────────────────────────────────────► Consolidation
-AP Rec ──────────────────────────────────────────────► Consolidation
-Payroll JEs ─────────────────────────────────────────► Accrual Review
-Fixed Asset D&A ─────────────────────────────────────► Balance Sheet
-Accruals (all) ──────────────────────────────────────► Prelim P&L
+Bank Recs ------------------------------------------► Controller Review
+AR Rec ----------------------------------------------► Consolidation
+AP Rec ----------------------------------------------► Consolidation
+Payroll JEs -----------------------------------------► Accrual Review
+Fixed Asset D&A -------------------------------------► Balance Sheet
+Accruals (all) --------------------------------------► Prelim P&L
                                                               │
                                                               ▼
-Revenue Recognition ─────────────────────────────────► Prelim P&L
+Revenue Recognition ---------------------------------► Prelim P&L
                                                               │
                                                               ▼
-Prelim P&L ──────────────────────────────────────────► Tax Provision
+Prelim P&L ------------------------------------------► Tax Provision
                                                               │
-IC Elimination ──────────────────────────────────────► Consolidation
+IC Elimination --------------------------------------► Consolidation
                                                               │
-Prelim P&L + Tax + IC ───────────────────────────────► Final Consolidation
+Prelim P&L + Tax + IC -------------------------------► Final Consolidation
                                                               │
                                                               ▼
-Final Consolidation ─────────────────────────────► Management Package
+Final Consolidation ---------------------------------► Management Package
 ```
 
 ### Close Metrics to Track
@@ -739,951 +739,1291 @@ Operating Margin     XX.X%       XX.X%       X.Xpts
 
 ### Revenue Decomposition
 ```
-Total Revenue Variance = Price Effect + Volume Effect + Mix Effect
+Revenue Variance = Volume Effect + Price Effect + Mix Effect
 
-Price Effect  = (Actual Price − Budget Price) × Actual Volume
-Volume Effect = (Actual Volume − Budget Volume) × Budget Price
-Mix Effect    = Residual (total variance − price − volume)
+Volume Effect = (Actual Units − Budget Units) × Budget Price
+Price Effect  = (Actual Price − Budget Price) × Actual Units
+Mix Effect    = Budget Price × (Actual Mix − Budget Mix) × Total Actual Units
 
 Example:
-  Budget: 1,000 units × $100 = $100,000
-  Actual: 1,100 units × $95 = $104,500
-  Total variance: +$4,500 (F)
+  Product A: Budget 1,000 units @ $100 = $100,000
+  Product B: Budget 1,000 units @ $200 = $200,000
+  Total Budget = $300,000
 
-  Price Effect:  ($95 − $100) × 1,100 = −$5,500 (U)
-  Volume Effect: (1,100 − 1,000) × $100 = +$10,000 (F)
-  Total:         −$5,500 + $10,000 = +$4,500 ✓
+  Actual Product A: 1,200 units @ $95  = $114,000
+  Actual Product B: 800 units  @ $210  = $168,000
+  Total Actual = $282,000
+
+  Overall Variance = $282,000 − $300,000 = ($18,000) Unfavorable
+
+  Volume Effect: (+200 − 200) × weighted avg = net zero (units same total)
+  Price Effect A: ($95 − $100) × 1,200 = ($6,000) U
+  Price Effect B: ($210 − $200) × 800  = $8,000   F
+  Mix Effect: Shift from higher-margin B to lower-margin A = ($20,000) U
 ```
 
-### Narrative Commentary Standards
+### Waterfall Chart Narrative Template
+```
+"Operating income of $[X]M came in $[Y]M [above/below] budget of $[Z]M.
 
-**Structure for each material variance:**
-1. **What**: State the variance amount and direction (favorable/unfavorable)
-2. **Why**: Identify the primary driver (volume, price, timing, one-time, structural)
-3. **So what**: Explain the business implication and whether it will recur
+Revenue was $[A]M [favorable/unfavorable] driven by:
++ $[B]M higher volume in [segment] driven by [reason]
+− $[C]M lower pricing in [segment] due to [competitive pressure/discounting]
+− $[D]M unfavorable mix as [higher-margin product] underperformed
 
-**Good commentary example:**
-> "S&M expense was $2.1M, $0.4M (16%) unfavorable to budget. The variance reflects $0.3M of accelerated hiring to support Q4 enterprise pipeline (3 AEs vs. 1 budgeted), partially offset by $0.1M in deferred event spend. The hiring headcount was approved by the CEO in September; the associated quota attainment is not expected until Q2 of next year."
+This was partially [offset by / compounded by] expenses:
++ $[E]M favorable in R&D due to [timing of headcount / vendor delays]
+− $[F]M unfavorable in S&M due to [campaign pull-forward / trade show costs]
+± $[G]M in G&A due to [litigation reserve / one-time item]
 
-**Poor commentary example:**
-> "S&M was over budget due to higher headcount."
+Outlook: Management [reaffirms / revises] full-year guidance of $[X]M revenue
+given [trend rationale]."
+```
 
 ---
 
 ## 6. Audit Support & SOX Compliance
 
 ### When to Use
-- Preparing for internal or external audit fieldwork
-- Documenting controls for SOX 404 testing
-- Selecting statistical samples for control testing
+- SOX 404 control testing
+- Preparing audit samples for internal or external auditors
+- Documenting internal controls
 - Responding to auditor requests
-- Classifying control deficiencies
+- Deficiency classification (significant deficiency vs. material weakness)
 
-### SOX 404 Control Documentation Standards
+### SOX 404 Control Testing Workflow
 
-#### Control Description Requirements
+**Step 1: Identify In-Scope Controls**
 ```
-Control ID:          [CC-###]
-Control Name:        [Descriptive name]
-Control Objective:   [What risk this control addresses]
-Control Type:        [Preventive / Detective]
-Automation:          [Manual / Automated / IT-Dependent Manual]
-Frequency:           [Daily / Weekly / Monthly / Quarterly / Annual]
-Risk Category:       [Financial Reporting / Operations / Compliance]
-Control Owner:       [Name / Role]
+Tier 1 – Company-Level Controls (ITGC)
+  □ User access reviews (quarterly)
+  □ Segregation of duties (SoD) matrix
+  □ Change management controls
+  □ Backup and recovery procedures
 
-Control Activity:
-  [Specific step-by-step description of what the control performer does,
-  what they review, how they document their review, and how they evidence
-  that the control was performed]
-
-Evidence Retained:
-  [Specific document or system record that proves the control was performed]
-
-IT Dependencies:
-  [Systems, reports, or application controls this control relies upon]
-
-Related Controls:
-  [Upstream or downstream controls in the same process]
+Tier 2 – Process-Level Controls
+  □ Financial close controls (journal entry review, reconciliations)
+  □ Revenue recognition controls (contract review, billing accuracy)
+  □ Procurement controls (PO approval, 3-way match)
+  □ Payroll controls (authorization, accurate calculation)
+  □ Financial reporting controls (management review of fluctuations)
 ```
 
-#### COSO Framework Checklist
+**Step 2: Select Sample Sizes (PCAOB guidance)**
 ```
-Control Environment
-□ Tone at the top documented (code of conduct, ethics policy)
-□ Board and audit committee oversight structure defined
-□ HR policies for hiring, training, and evaluation in place
-□ Organizational structure and reporting lines documented
+Population Size    Risk Level    Sample Size
+< 25               Any           Entire population
+25 – 99            Low           25
+25 – 99            High          40
+100 – 249          Low           30
+100 – 249          High          60
+250 – 499          Low           35
+250 – 499          High          75
+500+               Low           40
+500+               High          100
 
-Risk Assessment
-□ Financial reporting risks identified and documented
-□ Risk owners assigned
-□ Control objectives linked to identified risks
-□ Fraud risk assessment performed
-
-Control Activities
-□ Controls designed to address each identified risk
-□ IT general controls (ITGC) documented and operating
-□ Segregation of duties maintained
-□ Management review controls operating
-
-Information & Communication
-□ Financial reporting information is complete and accurate
-□ Deficiencies communicated to appropriate levels of management
-□ Communication with external parties functioning
-
-Monitoring Activities
-□ Ongoing and separate evaluations of controls documented
-□ Control deficiencies remediated on a timely basis
-□ Results reported to appropriate management
+Sampling Method: Random (use RAND() in Excel or Python random.sample())
+For automated/IT controls: Sample 1–3 (test once if no exceptions found)
 ```
 
-### Sample Selection Methods
+**Sample Selection Script (Python):**
+```python
+import random
 
-#### Statistical Sampling
+def select_audit_sample(population: list, sample_size: int, seed: int = None) -> list:
+    """
+    Randomly select audit sample from population.
+    
+    Args:
+        population: List of transaction IDs or items
+        sample_size: Number of items to select
+        seed: Random seed for reproducibility (document this!)
+    
+    Returns:
+        List of selected sample items
+    """
+    if seed:
+        random.seed(seed)
+    
+    if len(population) <= sample_size:
+        return population  # Test entire population
+    
+    sample = random.sample(population, sample_size)
+    return sorted(sample)
 
-| Population Size | Confidence Level | Tolerable Deviation Rate | Sample Size |
-|---|---|---|---|
-| Any | 95% | 5% | 59 |
-| Any | 95% | 10% | 29 |
-| Any | 90% | 5% | 45 |
-| Any | 90% | 10% | 22 |
-
-**Formula for attribute sampling:**
-```
-n = (Z^2 × p × q) / e^2
-
-Where:
-  Z = confidence factor (1.96 for 95%; 1.645 for 90%)
-  p = expected deviation rate (use 0.5 if unknown to maximize sample)
-  q = 1 - p
-  e = tolerable error rate
-```
-
-#### Haphazard Sampling (Non-Statistical)
-For populations where statistical rigor is not required:
-- Select items from throughout the population (beginning, middle, end)
-- Include items of varying sizes and types
-- Avoid systematic selection patterns
-- Document the selection rationale
-
-#### Judgmental Sampling
-For targeted testing of higher-risk items:
-- Large dollar items above a threshold
-- Items related to identified risks
-- Items from a specific time period
-- Items involving a specific counterparty
-- Document why these items were selected
-
-### SOX Testing Workpaper Template
-```
-SOX Control Testing Workpaper
-
-Control ID:          [CC-###]
-Test Date:           [Date(s) of testing]
-Tester:              [Name / Role]
-Reviewer:            [Name / Role]
-
-CONTROL DESCRIPTION
-[Copy of control description from control matrix]
-
-TEST OBJECTIVE
-[What assertion this test is designed to address: completeness, accuracy, 
-existence, valuation, rights/obligations, presentation/disclosure]
-
-POPULATION
-  Total population: [N items] / $[Amount]
-  Population period: [From] to [To]
-  Source: [System / Report name and run date]
-
-SAMPLE SELECTION
-  Method: [Statistical / Haphazard / Judgmental]
-  Sample size: [N] items
-  Items tested: [List or attach sample selection workpaper]
-
-TEST PROCEDURES
-1. [Specific procedure performed — what was inspected, what was verified]
-2. [Specific procedure performed]
-3. [Specific procedure performed]
-
-EXCEPTIONS IDENTIFIED
-  [Exception 1]: [Description, item reference, amount if applicable]
-  [Exception 2]: [Description, item reference]
-  Total exceptions: [N] out of [N] tested
-
-CONCLUSION
-  Deviation rate: [N exceptions / N tested = X%]
-  Upper deviation rate: [Calculated using appropriate formula]
-  Tolerable deviation rate: [X%]
-  ☐ Control is EFFECTIVE: deviation rate ≤ tolerable deviation rate
-  ☐ Control is INEFFECTIVE: deviation rate > tolerable deviation rate
-
-DEFICIENCY CLASSIFICATION (if applicable)
-  ☐ Control Deficiency: does not affect significant account/assertion
-  ☐ Significant Deficiency: important enough to merit attention
-  ☐ Material Weakness: reasonable possibility of material misstatement
+# Example: Select 40 journal entries from 500+ population
+all_jes = list(range(1001, 1537))  # JE numbers 1001–1536
+sample = select_audit_sample(all_jes, sample_size=40, seed=20260303)
+print(f"Sample size: {len(sample)}")
+print(f"Sample items: {sample}")
 ```
 
-### Control Deficiency Classification Matrix
+### Control Testing Documentation Template
+```
+CONTROL TEST WORKPAPER
 
-| Severity | Definition | Required Actions |
-|---|---|---|
-| Control Deficiency | Design or operation flaw unlikely to result in material misstatement | Remediate; monitor | 
-| Significant Deficiency | More than remote likelihood of more-than-inconsequential misstatement | Report to audit committee |
-| Material Weakness | Reasonable possibility of material misstatement | Report to audit committee; disclose publicly (public companies) |
+Control ID:        [SOX-FIN-001]
+Process:           [Financial Close / Revenue / Payroll / etc.]
+Control Name:      [Journal Entry Review]
+Control Owner:     [Controller, CFO]
+Control Type:      [Preventive / Detective]
+Frequency:         [Daily / Weekly / Monthly / Quarterly]
+Risk Addressed:    [Unauthorized journal entries, recording errors]
 
-**Aggregation rule:** Multiple control deficiencies addressing the same risk area must be evaluated in combination — they may aggregate to a higher severity level.
+CONTROL DESCRIPTION:
+[The Controller reviews and approves all manual journal entries above
+$[X]K before posting. The review includes: (1) business purpose, (2)
+supporting documentation, (3) correct accounts, (4) proper period.]
+
+TESTING PROCEDURE:
+1. Obtain population of manual JEs for the period
+2. Apply SALT to identify anomalies (round numbers, unusual times, etc.)
+3. Select sample per PCAOB guidance (population: [N]; sample: [N])
+4. For each sample item, inspect:
+   □ Journal entry form / ERP screenshot
+   □ Approval signature / system approval log
+   □ Supporting documentation attached
+   □ Posted to correct account and period
+
+RESULTS SUMMARY:
+Population:        [N] manual JEs totaling $[X]M
+Sample:            [N] items
+Exceptions found:  [0] / [Describe any exceptions]
+Conclusion:        Control [Operating Effectively / Exception Noted]
+
+DEFICIENCY ANALYSIS (if applicable):
+Deficiency Description: [Describe]
+Root Cause:             [Describe]
+Financial Statement Impact: $[Amount] / [None / Immaterial]
+Classification:         [Control Deficiency / Significant Deficiency / Material Weakness]
+
+Prepared by: ____________  Date: ____________
+Reviewed by: ____________  Date: ____________
+```
+
+### Deficiency Classification Framework
+```
+CONTROL DEFICIENCY
+  Definition: A control does not operate effectively or does not exist
+              where necessary to prevent or detect a misstatement.
+  Impact: Immaterial potential misstatement
+  Required action: Remediate; no disclosure required
+
+SIGNIFICANT DEFICIENCY
+  Definition: A deficiency, or combination of deficiencies, that is
+              less severe than a material weakness but important enough
+              to merit attention by those responsible for financial reporting.
+  Impact: More than inconsequential potential misstatement
+  Required action: Report to Audit Committee; remediate promptly
+
+MATERIAL WEAKNESS
+  Definition: A deficiency where there is a reasonable possibility that
+              a material misstatement of the financial statements will
+              not be prevented or detected on a timely basis.
+  Impact: Could result in material misstatement of financial statements
+  Required action: External disclosure required (10-K); remediation
+                   plan with timeline; re-test after remediation
+
+MATERIALITY THRESHOLD GUIDANCE:
+  Quantitative: Typically 5% of pre-tax income (SEC Staff guidance)
+  Qualitative: Consider nature of account, risk, fraud indicators
+```
+
+### Audit Request Response Checklist
+```
+For each Prepared by Client (PBC) item:
+□ Understand exactly what the auditor needs (format, period, scope)
+□ Assign a single owner responsible for the item
+□ Set internal due date 2 days before auditor deadline
+□ Quality review before submission (completeness, formatting)
+□ Log in PBC tracker: item #, description, owner, due date, status
+□ Label files clearly: [PBC-###]_[Description]_[Period].xlsx
+□ Brief person delivering item on likely follow-up questions
+□ Keep copy of everything submitted
+```
 
 ---
 
-## 7. Market Data & Investment Research
+## 7. Markets & Investment Research
 
 ### When to Use
-- Looking up current stock prices, financials, or earnings data
+- Current stock/crypto/ETF prices
+- Historical price data for analysis
+- Financial statements for public companies
+- Earnings call transcripts
 - Building an investment thesis
-- Comparable-company analysis (comps)
-- Screening for investment ideas
-- Emulating a specific investor's methodology
+- Comparable company analysis
+- Emulating famous investor frameworks
 
-### Perplexity Computer Finance Tools
+### CRITICAL: Never Use Web Search for Financial Data
 
-| Tool | What It Returns | When to Use |
-|---|---|---|
-| get_stock_price | Real-time or delayed price, volume, market cap | Any current price query |
-| get_historical_prices | OHLCV data for a specified date range | Trend analysis, charting, returns |
-| get_financial_statements | IS, BS, CF from SEC filings | Fundamental analysis |
-| get_earnings_transcript | Full transcript with Q&A | Management guidance, KPIs, strategy |
-| get_analyst_estimates | EPS and revenue consensus estimates | Earnings expectations, surprise analysis |
-| get_insider_transactions | Insider buys/sells with filing dates | Insider sentiment |
-| screen_stocks | Filter by market cap, ratio, sector | Idea generation, peer screening |
-| get_sec_filing | Full 10-K, 10-Q, 8-K, proxy text | Deep due diligence, risk factors |
+**Do NOT use `search_web` for:** Stock prices, historical prices, P/E ratios, market caps, revenue figures, EPS, guidance, earnings transcripts. Web search returns stale, unstructured snippets.
 
-### Investment Research Workflow
+**ALWAYS use finance tools from the connector service:**
+```python
+# Step 1: Discover tools
+list_external_tools(queries=["finance_"])
 
-```
-Phase 1: Screening
-  → screen_stocks: Apply quantitative filters (sector, size, valuation)
-  → Initial list of candidates
+# Step 2: Get schemas (REQUIRED before calling)
+describe_external_tools(source_id="finance", tool_names=["finance_quotes", "finance_financials"])
 
-Phase 2: Financial Overview
-  → get_financial_statements: Pull IS, BS, CF for 3–5 years
-  → Calculate key ratios (margins, returns, leverage)
-  → get_historical_prices: Calculate historical returns and volatility
-
-Phase 3: Earnings Quality
-  → get_earnings_transcript: Review last 4 quarters
-  → Extract: Management guidance, KPI trends, risk flags, strategic commentary
-  → get_analyst_estimates: Compare actual vs. estimates; assess beat/miss pattern
-
-Phase 4: Valuation
-  → Build DCF (see Section 1 template)
-  → Comparable company analysis (EV/EBITDA, P/E, P/S vs. peers)
-  → Implied price range: Low / Base / Bull case
-
-Phase 5: Due Diligence
-  → get_sec_filing: Read 10-K risk factors, MD&A, footnotes
-  → get_insider_transactions: Check alignment
-  → Qualitative assessment: Moat, management quality, competitive dynamics
-
-Phase 6: Thesis Documentation
-  → Produce investment memo (see template below)
+# Step 3: Call tools — always use source_id="finance"
+call_external_tool(tool_name="<tool>", source_id="finance", arguments={...})
 ```
 
-### Investment Memo Template
-```
-## Investment Memo: [Company] ([TICKER])
+### Reference Date Protocol
+Every finance query has a reference date. Map it to fiscal parameters before calling tools:
 
-**Date**: [Date]     **Analyst**: [Name]
-**Recommendation**: BUY / HOLD / SELL
-**Price Target**: $[X]     **Current Price**: $[X]     **Upside/Downside**: [X]%
-**Time Horizon**: [X months/years]
-
-### Thesis Summary
-[2–3 sentences: why this security is mispriced and what the catalyst is]
-
-### Key Facts
-| Metric | Value |
+| Reference Date Month | Fiscal Quarter |
 |---|---|
-| Market Cap | $[X]B |
-| EV | $[X]B |
-| Revenue (TTM) | $[X]M / [Y]% YoY growth |
-| Gross Margin | [X]% |
-| EBITDA Margin | [X]% |
-| Net Debt | $[X]M / [X]x EBITDA |
-| EV/EBITDA (NTM) | [X]x vs. peers [X]x |
-| P/E (NTM) | [X]x vs. peers [X]x |
+| January–March | Q1 |
+| April–June | Q2 |
+| July–September | Q3 |
+| October–December | Q4 |
 
-### Bull Case
-- [Catalyst 1: specific and measurable]
-- [Catalyst 2]
-- [Upside scenario: $X price target — [X]x EBITDA on $[Y]M EBITDA]
+**Current date: March 3, 2026 → `as_of_fiscal_year=2026, as_of_fiscal_quarter=1`**
 
-### Base Case
-- [Expected scenario assumptions]
-- [Base case price target: $X]
+### Finance Tool Quick Reference
 
-### Bear Case
-- [Risk 1: what goes wrong and how bad]
-- [Risk 2]
-- [Downside scenario: $X floor — what multiple / EBITDA]
-
-### Valuation
-| Method | Implied Price | Weight |
+| Tool | Purpose | Key Parameters |
 |---|---|---|
-| DCF (WACC: [X]%, TGR: [Y]%) | $[X] | [X]% |
-| EV/EBITDA ([X]x NTM) | $[X] | [X]% |
-| P/E ([X]x NTM) | $[X] | [X]% |
-| Weighted Average Price Target | $[X] | |
+| `finance_tickers_lookup` | Resolve ticker from company name | `queries: ["Tesla"]` |
+| `finance_quotes` | Real-time price, P/E, market cap | `ticker_symbols, fields` |
+| `finance_ohlcv_histories` | Historical price OHLCV CSV | `ticker_symbols, start_date, end_date` |
+| `finance_financials` | Income statement, balance sheet, CF | `ticker_symbols, period, as_of_fiscal_year, limit` |
+| `finance_earnings` | Earnings transcripts, EPS history | `ticker_symbol, as_of_fiscal_year, data_types` |
+| `finance_earnings_schedule` | Earnings dates | `ticker_symbols, as_of_fiscal_year` |
+| `finance_company_profile` | CEO, sector, employees | `ticker_symbols` |
+| `finance_company_peers` | Comparable companies | `ticker_symbol` |
+| `finance_segments` | Revenue by segment, KPIs | `ticker_symbols` |
+| `finance_estimates` | Analyst consensus forecasts | `ticker_symbols` |
+| `finance_fundamentals` | P/E, EV/EBITDA time series | `ticker_symbols` |
+| `finance_analyst_research` | Price targets, upgrades | `ticker_symbols` |
+| `finance_market_gainers` | Top gainers today | — |
+| `finance_market_losers` | Top losers today | — |
+| `finance_massive` | Options, tick data, macro (raw API) | `pathname, params` |
 
-### Risks
-| Risk | Probability | Impact | Mitigation |
-|---|---|---|---|
-| [Risk 1] | [H/M/L] | [H/M/L] | [Mitigant] |
-| [Risk 2] | [H/M/L] | [H/M/L] | [Mitigant] |
+### Common Finance Query Patterns
 
-### Monitoring Triggers
-- Re-evaluate if [specific metric] changes by more than [threshold]
-- Quarterly earnings: focus on [specific KPI]
-- Stop-loss at $[X] (−[Y]% from current)
+```python
+# Get current quote
+call_external_tool("finance_quotes", "finance", {
+    "ticker_symbols": ["AAPL", "MSFT"],
+    "fields": ["price", "marketCap", "pe", "eps", "dividendYieldTTM"]
+})
+
+# Get historical prices (use for past reference dates, not finance_quotes)
+call_external_tool("finance_ohlcv_histories", "finance", {
+    "ticker_symbols": ["NVDA"],
+    "start_date_yyyy_mm_dd": "2025-01-01",
+    "end_date_yyyy_mm_dd": "2026-03-03"
+})
+
+# Get financials — always pass as_of
+call_external_tool("finance_financials", "finance", {
+    "ticker_symbols": ["TSLA"],
+    "period": "annual",
+    "as_of_fiscal_year": 2025,
+    "limit": 3,
+    "income_statement_metrics": ["revenue", "netIncome", "grossProfit"],
+    "balance_sheet_metrics": ["totalDebt", "cashAndCashEquivalents"],
+    "cash_flow_metrics": ["freeCashFlow", "capitalExpenditures"]
+})
+
+# Get earnings transcript — primary source for guidance, KPIs, non-GAAP
+call_external_tool("finance_earnings", "finance", {
+    "ticker_symbol": "AAPL",
+    "as_of_fiscal_year": 2025,
+    "as_of_fiscal_quarter": 4,
+    "limit": 1,
+    "data_types": ["transcript_full"]
+})
+
+# Resolve unknown ticker
+call_external_tool("finance_tickers_lookup", "finance", {
+    "queries": ["Palantir Technologies", "ARM Holdings"]
+})
+```
+
+### Data Source Decision Tree
+```
+Public company question?
+├-- Revenue, margins, EPS, debt, FCF → finance_financials
+├-- Guidance, non-GAAP metrics, segment KPIs, management commentary
+│   → finance_earnings (transcripts answer ~50% of filing questions)
+├-- Price targets, analyst ratings → finance_analyst_research
+├-- Options, tick data, macro (treasury yields, CPI) → finance_massive
+└-- Only if finance tools insufficient → search_web
+    (10-K footnotes, proxy statements, 8-K offering terms)
+```
+
+### Investment Research Framework
+
+**One-Page Investment Thesis Template:**
+```
+COMPANY: [Name] | TICKER: [X] | SECTOR: [X]
+DATE: [X] | ANALYST: [X] | RECOMMENDATION: BUY / HOLD / SELL
+PRICE TARGET: $[X] (current: $[X], upside: [X]%)
+
+INVESTMENT THESIS (3-sentence summary):
+[Core reason to own the stock]
+[Key catalyst or competitive advantage]
+[Risk-adjusted return expectation]
+
+BUSINESS OVERVIEW:
+Revenue model: [Subscription / Transaction / Product / Advertising]
+Total addressable market: $[X]B
+Market share: [X]%
+Key products/services: [List]
+Moat: [Brand / Network Effects / Switching Costs / Cost Advantage / IP]
+
+FINANCIAL SNAPSHOT (LTM):
+Revenue:       $[X]B    YoY growth: [X]%
+Gross Margin:  [X]%     vs. peers: [higher/lower]
+EBITDA Margin: [X]%     vs. budget: [on track/ahead/behind]
+FCF Yield:     [X]%     Net Debt/EBITDA: [X]x
+P/E (NTM):     [X]x     EV/Revenue (NTM): [X]x
+
+BULL CASE ($[X] target, [X]% probability):
+- [Catalyst 1]
+- [Catalyst 2]
+
+BASE CASE ($[X] target, [X]% probability):
+- [Expected trajectory]
+- [Key assumptions]
+
+BEAR CASE ($[X] target, [X]% probability):
+- [Risk 1]
+- [Risk 2]
+
+KEY RISKS:
+1. [Competitive / Market / Regulatory / Execution]
+2. [Balance sheet / Leverage / Liquidity]
+3. [Macro / Interest rate / Currency]
+
+COMPARABLE COMPANIES:
+Company    EV/Revenue  EV/EBITDA  P/E    Growth   Margin
+[Peer A]   [X]x        [X]x       [X]x   [X]%     [X]%
+[Peer B]   [X]x        [X]x       [X]x   [X]%     [X]%
+[Target]   [X]x        [X]x       [X]x   [X]%     [X]%
 ```
 
 ### Famous Investor Frameworks
 
-#### Warren Buffett (Value + Quality)
-Screen for: ROE > 15% sustained; low debt; strong FCF; simple business; economic moat
-Key question: "Would I be comfortable owning this business for 10 years if the market closed?"
-Red flags: High leverage; commodity business; frequent equity issuance
+**Warren Buffett (Intrinsic Value / Moat):**
+```
+Screen for:
+- Consistent high ROE (> 15%) for 10+ years
+- Low debt (Net Debt/EBITDA < 2x)
+- Strong free cash flow conversion
+- Identifiable economic moat (brand, network, cost)
+- Management integrity and capital allocation track record
+Value at: Conservative DCF, 10-year horizon, margin of safety > 25%
+```
 
-#### Peter Lynch (Growth at Reasonable Price)
-Screen for: PEG < 1.0; earnings growth 20–50%; institutional underownership
-Key question: "Can I explain this company's business to a 12-year-old?"
-Red flags: Hot industry hype; over-diversified management; consensus darling
+**Peter Lynch (GARP — Growth at Reasonable Price):**
+```
+PEG Ratio < 1.0 = potentially undervalued
+Criteria: EPS growth 20–50% per year; P/E < growth rate
+Tenbagger checklist: boring name, niche market, institutional under-ownership,
+  no analyst coverage, growing earnings, product with repeat purchases
+```
 
-#### Stanley Druckenmiller (Macro + Momentum)
-Focus: Macro thesis driving sector rotation; leading indicators; currency flows
-Key question: "What is the key variable the market is not pricing correctly?"
-Approach: Concentrate in highest-conviction ideas; cut losses fast; let winners ride
+**Ray Dalio (All-Weather / Macro):**
+```
+Macro framework: Rising/Falling Growth × Rising/Falling Inflation
+Risk parity: Weight positions by risk contribution, not dollar size
+Asset allocation across environments:
+  Rising growth: Stocks, corporate bonds
+  Falling growth: Treasuries, gold
+  Rising inflation: Commodities, TIPS, gold
+  Falling inflation: Stocks, bonds
+```
 
-#### George Soros (Reflexivity)
-Focus: Self-reinforcing feedback loops; inflection points; trend reversals
-Key question: "Where does market perception deviate from underlying reality?"
-Approach: Find the prevailing bias; determine when it will correct; position ahead
+**Michael Burry (Deep Value / Catalyst):**
+```
+Focus on: Misunderstood companies, distressed assets, complex situations
+Process: Bottom-up forensic accounting analysis; look for hidden value
+Check: FCF vs reported earnings; off-balance sheet items; asset values
+Catalyst required: Specific event that forces value recognition
+```
 
-#### Michael Burry (Deep Value + Catalyst)
-Screen for: Significant discount to tangible book or liquidation value; hidden asset value
-Key question: "What would this company be worth in liquidation?"
-Red flags: Management that does not act in shareholder interests; accounting irregularities
+**Citations:**
+When presenting data from finance tools, always cite:
+`https://perplexity.ai/finance/<TICKER>`
 
 ---
 
-## 8. Data Engineering & Pipelines
+## 8. Data Engineering for Finance
 
 ### When to Use
-- Building ETL/ELT pipelines from financial data sources
-- Designing data warehouse schemas for financial reporting
-- Setting up dbt models for financial statement automation
+- Building financial data pipelines (ERP → data warehouse)
+- Automating GL extracts, trial balance reports
+- Setting up dbt models for financial reporting
 - Implementing data quality checks on financial data
-- Creating real-time data ingestion from APIs or streaming sources
+- Streaming transaction data in real time
+- Handling schema changes in financial source systems
 
 ### Financial Data Pipeline Architecture
 
 ```
-[Data Sources]
-  ├── ERP (SAP, Oracle, NetSuite) ──────────►
-  ├── CRM (Salesforce) ──────────────────►
-  ├── Financial APIs (Bloomberg, Refinitiv) ►  Ingestion Layer
-  ├── Bank Feeds (Plaid, SWIFT) ────────►  (Airflow / Fivetran)
-  └── Market Data (Yahoo, Perplexity) ────►
-                                              │
-                                              ▼
-                                    [Raw Data Layer]
-                                    (S3 / GCS / ADLS)
-                                              │
-                                              ▼
-                                    [Transform Layer]
-                                    (dbt / Spark)
-                                              │
-                              ┌─────────┼─────────┐
-                              │              │              │
-                              ▼              ▼              ▼
-                      [Staging]      [Dimensional]     [Mart]
-                      (Raw clean)    (Dims + Facts)    (GL, AR, AP)
-                                              │
-                                              ▼
-                                    [Serving Layer]
-                          ┌───────┼──────┼───────┐
-                          ▼             ▼             ▼
-                    [BI Tools]    [Finance ERP]  [ML Models]
-                 (Tableau, Power BI)           (Forecasting)
+Source Systems                Extract              Transform            Load
+-----------------------------------------------------------------------------
+ERP (SAP/Oracle/NetSuite) --► Fivetran/Airbyte --► dbt models --► Snowflake
+General Ledger --------------► CDC (Debezium) ----► Spark ---------► BigQuery
+AP/AR Subledgers ------------► API extracts -------► dbt -----------► Redshift
+Payroll System --------------► SFTP/API -----------► Pandas --------► Databricks
+Market Data API -------------► finance_tools -------► Python --------► PostgreSQL
+Bank Feeds ------------------► Plaid / OFX ---------► dbt -----------► DW
 ```
 
 ### dbt Model Structure for Finance
 
+```
+dbt_finance/
+├-- models/
+│   ├-- staging/                    # 1:1 with source tables, clean & rename
+│   │   ├-- stg_gl_transactions.sql
+│   │   ├-- stg_chart_of_accounts.sql
+│   │   ├-- stg_ar_invoices.sql
+│   │   └-- stg_ap_invoices.sql
+│   ├-- intermediate/               # Business logic, joins
+│   │   ├-- int_trial_balance.sql
+│   │   ├-- int_ar_aging.sql
+│   │   └-- int_budget_actuals.sql
+│   └-- marts/                      # Final reporting tables
+│       ├-- finance/
+│       │   ├-- fct_gl_transactions.sql
+│       │   ├-- dim_chart_of_accounts.sql
+│       │   ├-- fct_ar_aging.sql
+│       │   ├-- fct_budget_vs_actual.sql
+│       │   └-- rpt_income_statement.sql
+│       └-- schema.yml              # Tests + documentation
+```
+
+**Example: Trial Balance dbt Model**
 ```sql
--- models/staging/stg_gl_transactions.sql
--- Source: Raw GL export from ERP
-SELECT
-    transaction_id,
-    CAST(transaction_date AS DATE) AS transaction_date,
-    account_code,
-    account_name,
-    cost_center,
-    entity,
-    CAST(amount AS DECIMAL(18,2)) AS amount,
-    currency,
-    description,
-    journal_reference,
-    created_by,
-    CAST(created_at AS TIMESTAMP) AS created_at
-FROM {{ source('erp', 'gl_transactions') }}
-WHERE transaction_date >= '2020-01-01'
-  AND amount != 0
+-- models/marts/finance/rpt_trial_balance.sql
+{{
+    config(
+        materialized='table',
+        tags=['finance', 'close', 'daily']
+    )
+}}
 
--- models/marts/finance/income_statement.sql
--- Monthly income statement by cost center
+WITH gl AS (
+    SELECT * FROM {{ ref('stg_gl_transactions') }}
+),
+
+coa AS (
+    SELECT * FROM {{ ref('stg_chart_of_accounts') }}
+),
+
+aggregated AS (
+    SELECT
+        gl.account_number,
+        coa.account_name,
+        coa.account_type,           -- Asset, Liability, Equity, Revenue, Expense
+        coa.financial_statement,    -- Balance Sheet, Income Statement
+        coa.department,
+        gl.fiscal_year,
+        gl.fiscal_period,
+        SUM(gl.debit_amount)  AS total_debits,
+        SUM(gl.credit_amount) AS total_credits,
+        SUM(gl.debit_amount) - SUM(gl.credit_amount) AS net_balance
+    FROM gl
+    LEFT JOIN coa USING (account_number)
+    GROUP BY 1, 2, 3, 4, 5, 6, 7
+)
+
 SELECT
-    DATE_TRUNC('month', t.transaction_date) AS period,
-    t.entity,
-    t.cost_center,
-    coa.statement_section,    -- Revenue / COGS / OpEx
-    coa.line_item,
-    SUM(t.amount) AS amount
-FROM {{ ref('stg_gl_transactions') }} t
-JOIN {{ ref('dim_chart_of_accounts') }} coa
-    ON t.account_code = coa.account_code
-WHERE coa.statement_section IN ('Revenue', 'COGS', 'Operating Expenses')
-GROUP BY 1, 2, 3, 4, 5
-ORDER BY 1, 2, coa.sort_order
+    *,
+    CASE
+        WHEN account_type IN ('Asset', 'Expense') AND net_balance >= 0 THEN net_balance
+        WHEN account_type IN ('Liability', 'Equity', 'Revenue') AND net_balance <= 0 THEN ABS(net_balance)
+        ELSE 0
+    END AS normal_balance,
+    CURRENT_TIMESTAMP AS dbt_updated_at
+
+FROM aggregated
 ```
 
-### Financial Data Quality Checks
+**Example: Budget vs Actual dbt Model**
+```sql
+-- models/marts/finance/fct_budget_vs_actual.sql
+{{
+    config(
+        materialized='incremental',
+        unique_key=['account_number', 'department', 'fiscal_year', 'fiscal_period'],
+        tags=['finance', 'variance']
+    )
+}}
 
-```python
-# Great Expectations suite for GL data
-import great_expectations as ge
+WITH actuals AS (
+    SELECT
+        account_number,
+        department,
+        fiscal_year,
+        fiscal_period,
+        SUM(amount) AS actual_amount
+    FROM {{ ref('fct_gl_transactions') }}
+    GROUP BY 1, 2, 3, 4
+),
 
-# Core financial data quality tests
-expectations = [
-    # Every transaction must have a date
-    {"expectation_type": "expect_column_values_to_not_be_null",
-     "kwargs": {"column": "transaction_date"}},
-    
-    # Dates must be within valid range
-    {"expectation_type": "expect_column_values_to_be_between",
-     "kwargs": {"column": "transaction_date", 
-                "min_value": "2015-01-01", "max_value": "2030-12-31"}},
-    
-    # Account codes must exist in chart of accounts
-    {"expectation_type": "expect_column_values_to_be_in_set",
-     "kwargs": {"column": "account_code", "value_set": valid_account_codes}},
-    
-    # No null amounts
-    {"expectation_type": "expect_column_values_to_not_be_null",
-     "kwargs": {"column": "amount"}},
-    
-    # Journal entries must balance (sum to zero per journal_id)
-    # Custom expectation:
-    # SELECT journal_reference, SUM(amount) FROM gl WHERE SUM(amount) != 0
-    
-    # No duplicate transaction IDs
-    {"expectation_type": "expect_column_values_to_be_unique",
-     "kwargs": {"column": "transaction_id"}}
-]
+budget AS (
+    SELECT
+        account_number,
+        department,
+        fiscal_year,
+        fiscal_period,
+        budget_amount
+    FROM {{ ref('stg_budget_data') }}
+),
+
+combined AS (
+    SELECT
+        COALESCE(a.account_number, b.account_number) AS account_number,
+        COALESCE(a.department, b.department)          AS department,
+        COALESCE(a.fiscal_year, b.fiscal_year)        AS fiscal_year,
+        COALESCE(a.fiscal_period, b.fiscal_period)    AS fiscal_period,
+        COALESCE(a.actual_amount, 0)                  AS actual_amount,
+        COALESCE(b.budget_amount, 0)                  AS budget_amount,
+        COALESCE(a.actual_amount, 0) - COALESCE(b.budget_amount, 0) AS variance_amount,
+        CASE
+            WHEN COALESCE(b.budget_amount, 0) = 0 THEN NULL
+            ELSE (COALESCE(a.actual_amount, 0) - COALESCE(b.budget_amount, 0))
+                 / ABS(COALESCE(b.budget_amount, 0))
+        END AS variance_pct
+    FROM actuals a
+    FULL OUTER JOIN budget b USING (account_number, department, fiscal_year, fiscal_period)
+)
+
+SELECT * FROM combined
+{% if is_incremental() %}
+WHERE fiscal_year = EXTRACT(YEAR FROM CURRENT_DATE)
+  AND fiscal_period = EXTRACT(MONTH FROM CURRENT_DATE)
+{% endif %}
 ```
 
-### Airflow DAG Pattern for Month-End Close
+### Financial Data Quality Tests (dbt schema.yml)
 
+```yaml
+version: 2
+
+models:
+  - name: fct_gl_transactions
+    description: "General Ledger transactions — source of truth for all financial reporting"
+    tests:
+      - dbt_utils.recency:
+          datepart: day
+          field: transaction_date
+          interval: 2
+          severity: warn
+
+    columns:
+      - name: transaction_id
+        description: "Unique GL transaction identifier"
+        tests:
+          - unique
+          - not_null
+
+      - name: debit_amount
+        tests:
+          - not_null
+          - dbt_utils.accepted_range:
+              min_value: 0
+
+      - name: credit_amount
+        tests:
+          - not_null
+          - dbt_utils.accepted_range:
+              min_value: 0
+
+      - name: account_number
+        tests:
+          - not_null
+          - relationships:
+              to: ref('stg_chart_of_accounts')
+              field: account_number
+
+      - name: fiscal_period
+        tests:
+          - not_null
+          - accepted_values:
+              values: [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12]
+
+  - name: rpt_trial_balance
+    description: "Trial balance — debits must equal credits per period"
+    tests:
+      # Custom test: debits == credits in each period
+      - dbt_utils.expression_is_true:
+          expression: "ABS(SUM(total_debits) - SUM(total_credits)) < 0.01"
+          config:
+            severity: error
+```
+
+### Airflow DAG for Monthly Close Data Pipeline
 ```python
+# dags/monthly_close_pipeline.py
 from airflow import DAG
-from airflow.operators.python import PythonOperator
+from airflow.operators.bash import BashOperator
+from airflow.providers.slack.operators.slack_webhook import SlackWebhookOperator
 from datetime import datetime, timedelta
 
 default_args = {
-    'owner': 'finance-eng',
-    'retries': 2,
-    'retry_delay': timedelta(minutes=15),
+    'owner': 'finance-data-team',
+    'email': ['finance-alerts@company.com'],
     'email_on_failure': True,
-    'email': ['finance-alerts@company.com']
+    'retries': 2,
+    'retry_delay': timedelta(minutes=10),
 }
 
 with DAG(
-    'month_end_close',
+    'monthly_close_pipeline',
     default_args=default_args,
-    schedule_interval='0 6 1 * *',  # 6 AM on first of each month
-    start_date=datetime(2024, 1, 1),
-    catchup=False
+    description='Month-end close data pipeline: ERP → dbt → reports',
+    schedule_interval='0 6 1 * *',   # 6am on 1st of every month
+    start_date=datetime(2026, 1, 1),
+    catchup=False,
+    tags=['finance', 'close', 'monthly'],
 ) as dag:
-    
-    extract_erp = PythonOperator(
-        task_id='extract_erp_gl',
-        python_callable=extract_gl_from_erp,
-        op_kwargs={'period': '{{ ds[:7] }}'}
+
+    extract_gl = BashOperator(
+        task_id='extract_gl_transactions',
+        bash_command='python /opt/airflow/scripts/extract_erp.py --period {{ ds[:7] }}'
     )
-    
-    validate_data = PythonOperator(
-        task_id='validate_gl_data',
-        python_callable=run_great_expectations_suite,
-        op_kwargs={'suite_name': 'gl_monthly_close'}
+
+    extract_budget = BashOperator(
+        task_id='extract_budget_data',
+        bash_command='python /opt/airflow/scripts/extract_budget.py --period {{ ds[:7] }}'
     )
-    
-    run_dbt = PythonOperator(
-        task_id='run_dbt_models',
-        python_callable=run_dbt_command,
-        op_kwargs={'command': 'dbt run --models tag:close_reporting'}
+
+    run_staging = BashOperator(
+        task_id='dbt_run_staging',
+        bash_command='cd /opt/dbt && dbt run --select staging.*'
     )
-    
-    generate_reports = PythonOperator(
+
+    run_marts = BashOperator(
+        task_id='dbt_run_marts',
+        bash_command='cd /opt/dbt && dbt run --select marts.finance.*'
+    )
+
+    test_data = BashOperator(
+        task_id='dbt_test',
+        bash_command='cd /opt/dbt && dbt test --select marts.finance.*'
+    )
+
+    generate_reports = BashOperator(
         task_id='generate_financial_reports',
-        python_callable=generate_monthly_package
+        bash_command='python /opt/airflow/scripts/generate_reports.py --period {{ ds[:7] }}'
+    )
+
+    notify_success = SlackWebhookOperator(
+        task_id='notify_close_complete',
+        slack_webhook_conn_id='slack_finance',
+        message='Month-end close pipeline completed for {{ ds[:7] }}. Reports available.',
+        trigger_rule='all_success',
+    )
+
+    [extract_gl, extract_budget] >> run_staging >> run_marts >> test_data >> generate_reports >> notify_success
+```
+
+### Architecture Decision Guide
+
+| Scenario | Recommended Stack | Notes |
+|---|---|---|
+| Daily GL extract, < 1M rows | Fivetran + dbt + Snowflake | Simplest, lowest maintenance |
+| Real-time transaction monitoring | Debezium + Kafka + Spark Streaming | Detect fraud/anomalies in seconds |
+| Multi-entity consolidation | dbt + Snowflake + Monte Carlo | Elimination logic in dbt |
+| ML forecasting from GL data | Spark + MLflow + Airflow | Feature engineering from GL history |
+| ERP to BI tool | Fivetran + dbt + Looker/Tableau | Standard modern data stack |
+
+---
+
+## 9. ML & Forecasting for Finance
+
+### When to Use
+- Revenue forecasting with ML methods
+- Anomaly detection in transactions (fraud, booking errors)
+- Churn prediction for subscription businesses
+- Cash flow forecasting
+- Demand planning for inventory finance
+- Credit risk scoring
+
+### Revenue Forecasting Workflow
+
+**Step 1: Feature Engineering from Financial Data**
+```python
+import pandas as pd
+import numpy as np
+
+def engineer_revenue_features(gl_df: pd.DataFrame) -> pd.DataFrame:
+    """
+    Build ML features from GL transaction history for revenue forecasting.
+    
+    Input: DataFrame with columns [date, account, amount, department, customer_id]
+    Output: Monthly feature matrix for forecasting
+    """
+    # Aggregate to monthly revenue
+    monthly = gl_df[gl_df['account'].str.startswith('4')].copy()  # Revenue accounts
+    monthly['year_month'] = pd.to_datetime(monthly['date']).dt.to_period('M')
+    
+    revenue = monthly.groupby('year_month')['amount'].sum().reset_index()
+    revenue.columns = ['year_month', 'revenue']
+    revenue = revenue.sort_values('year_month')
+    
+    # Lag features (prior months)
+    for lag in [1, 2, 3, 6, 12]:
+        revenue[f'revenue_lag_{lag}'] = revenue['revenue'].shift(lag)
+    
+    # Rolling statistics
+    revenue['revenue_ma3']  = revenue['revenue'].rolling(3).mean()
+    revenue['revenue_ma12'] = revenue['revenue'].rolling(12).mean()
+    revenue['revenue_std3'] = revenue['revenue'].rolling(3).std()
+    
+    # YoY growth
+    revenue['yoy_growth'] = revenue['revenue'].pct_change(12)
+    
+    # Seasonality features
+    revenue['month'] = revenue['year_month'].dt.month
+    revenue['quarter'] = revenue['year_month'].dt.quarter
+    
+    # Month-end effects (close timing)
+    revenue['is_q_end'] = revenue['month'].isin([3, 6, 9, 12]).astype(int)
+    revenue['is_year_end'] = (revenue['month'] == 12).astype(int)
+    
+    return revenue.dropna()
+
+
+def build_revenue_forecast_model(features_df: pd.DataFrame, 
+                                  horizon_months: int = 3):
+    """
+    Train XGBoost revenue forecast model with cross-validation.
+    Returns forecast with confidence intervals.
+    """
+    from xgboost import XGBRegressor
+    from sklearn.model_selection import TimeSeriesSplit
+    from sklearn.metrics import mean_absolute_percentage_error
+    
+    feature_cols = [c for c in features_df.columns 
+                    if c not in ['year_month', 'revenue']]
+    
+    X = features_df[feature_cols].values
+    y = features_df['revenue'].values
+    
+    # Time series cross-validation (no data leakage)
+    tscv = TimeSeriesSplit(n_splits=5)
+    cv_scores = []
+    
+    model = XGBRegressor(
+        n_estimators=200,
+        max_depth=4,
+        learning_rate=0.05,
+        subsample=0.8,
+        random_state=42
     )
     
-    extract_erp >> validate_data >> run_dbt >> generate_reports
+    for train_idx, val_idx in tscv.split(X):
+        model.fit(X[train_idx], y[train_idx])
+        preds = model.predict(X[val_idx])
+        mape = mean_absolute_percentage_error(y[val_idx], preds)
+        cv_scores.append(mape)
+    
+    print(f"CV MAPE: {np.mean(cv_scores):.2%} ± {np.std(cv_scores):.2%}")
+    
+    # Retrain on full data
+    model.fit(X, y)
+    
+    # Feature importance
+    importance = pd.Series(
+        model.feature_importances_, 
+        index=feature_cols
+    ).sort_values(ascending=False)
+    
+    return model, importance
 ```
 
----
-
-## 9. Statistical Modeling & ML Forecasting
-
-### When to Use
-- Revenue forecasting with time-series models
-- Anomaly detection in financial transactions
-- Customer churn prediction for subscription revenue
-- Risk modeling (credit, fraud, operational)
-- Scenario analysis and Monte Carlo simulation
-
-### Revenue Forecasting Models
-
-#### Time Series: Prophet
+**Step 2: Scenario Forecasting (Base / Bull / Bear)**
 ```python
-from prophet import Prophet
+def generate_scenarios(base_forecast: float, 
+                        growth_assumptions: dict) -> dict:
+    """
+    Generate three-scenario revenue forecast.
+    
+    growth_assumptions = {
+        'bear': {'revenue_growth': -0.05, 'probability': 0.20},
+        'base': {'revenue_growth': 0.10,  'probability': 0.60},
+        'bull': {'revenue_growth': 0.20,  'probability': 0.20},
+    }
+    """
+    scenarios = {}
+    for name, params in growth_assumptions.items():
+        scenarios[name] = {
+            'forecast': base_forecast * (1 + params['revenue_growth']),
+            'growth_rate': params['revenue_growth'],
+            'probability': params['probability'],
+        }
+    
+    # Expected value
+    ev = sum(s['forecast'] * s['probability'] 
+             for s in scenarios.values())
+    scenarios['expected_value'] = ev
+    
+    return scenarios
+
+
+# Example usage
+growth_assumptions = {
+    'bear': {'revenue_growth': -0.03, 'probability': 0.20},
+    'base': {'revenue_growth': 0.12,  'probability': 0.60},
+    'bull': {'revenue_growth': 0.22,  'probability': 0.20},
+}
+
+base_revenue = 10_000_000  # $10M current quarter
+scenarios = generate_scenarios(base_revenue, growth_assumptions)
+
+for name, values in scenarios.items():
+    if name != 'expected_value':
+        print(f"{name.upper():6s}: ${values['forecast']:>12,.0f}  "
+              f"({values['growth_rate']:+.1%} growth, "
+              f"{values['probability']:.0%} probability)")
+print(f"{'EV':6s}: ${scenarios['expected_value']:>12,.0f}")
+```
+
+### Anomaly Detection in Financial Transactions
+
+```python
+from sklearn.ensemble import IsolationForest
+from sklearn.preprocessing import StandardScaler
 import pandas as pd
-
-# Prepare data
-df = revenue_data.rename(columns={'date': 'ds', 'revenue': 'y'})
-
-# Add regressors for known events
-model = Prophet(
-    yearly_seasonality=True,
-    weekly_seasonality=False,  # For monthly revenue data
-    seasonality_mode='multiplicative',  # Better for growing revenue
-    changepoint_prior_scale=0.05  # Control trend flexibility
-)
-
-# Add known business events as regressors
-model.add_regressor('new_product_launch')
-model.add_regressor('marketing_spend')
-
-# Fit and forecast
-model.fit(df)
-future = model.make_future_dataframe(periods=12, freq='MS')  # 12 months
-forecast = model.predict(future)
-
-# Key output columns: ds, yhat, yhat_lower, yhat_upper
-print(forecast[['ds', 'yhat', 'yhat_lower', 'yhat_upper']].tail(12))
-```
-
-#### Anomaly Detection: IQR + Z-Score
-```python
 import numpy as np
-import pandas as pd
 
-def detect_financial_anomalies(df: pd.DataFrame, column: str) -> pd.DataFrame:
+def detect_transaction_anomalies(transactions_df: pd.DataFrame,
+                                  contamination: float = 0.01) -> pd.DataFrame:
     """
-    Flag transactions that are statistical outliers.
-    Uses both IQR (robust) and Z-score (parametric) methods.
+    Detect anomalous financial transactions using Isolation Forest.
+    
+    Detects: Unusual amounts, timing, account combinations, round-number entries
+    
+    Args:
+        transactions_df: GL transactions with amount, hour, account, user columns
+        contamination: Expected fraction of anomalies (default 1%)
+    
+    Returns:
+        DataFrame with anomaly_score and is_anomaly columns
     """
-    Q1 = df[column].quantile(0.25)
-    Q3 = df[column].quantile(0.75)
-    IQR = Q3 - Q1
-    iqr_flag = (df[column] < Q1 - 1.5 * IQR) | (df[column] > Q3 + 1.5 * IQR)
+    # Feature engineering for anomaly detection
+    df = transactions_df.copy()
     
-    z_scores = np.abs((df[column] - df[column].mean()) / df[column].std())
-    z_flag = z_scores > 3
+    # Amount-based features
+    df['log_amount'] = np.log1p(df['amount'].abs())
+    df['is_round_number'] = (df['amount'] % 1000 == 0).astype(int)
+    df['is_round_5k'] = (df['amount'] % 5000 == 0).astype(int)
     
-    df['anomaly_iqr'] = iqr_flag
-    df['anomaly_zscore'] = z_flag
-    df['anomaly'] = iqr_flag | z_flag
-    df['z_score'] = z_scores
+    # Timing features (Benford's Law analysis)
+    df['first_digit'] = df['amount'].abs().astype(str).str[0].astype(int)
+    benfords_expected = {1: 0.301, 2: 0.176, 3: 0.125, 4: 0.097,
+                         5: 0.079, 6: 0.067, 7: 0.058, 8: 0.051, 9: 0.046}
+    df['benfords_deviation'] = df['first_digit'].map(benfords_expected)
     
-    return df
-
-# Apply to AP transactions
-ap_anomalies = detect_financial_anomalies(
-    ap_df[ap_df['vendor_id'] == vendor_id],
-    'invoice_amount'
-)
-print(f"Flagged {ap_anomalies['anomaly'].sum()} anomalous invoices")
+    # Posted hour (unusual hours = higher risk)
+    df['post_hour'] = pd.to_datetime(df['posted_at']).dt.hour
+    df['is_off_hours'] = ((df['post_hour'] < 7) | (df['post_hour'] > 20)).astype(int)
+    df['is_weekend'] = pd.to_datetime(df['posted_at']).dt.dayofweek.isin([5, 6]).astype(int)
+    
+    # Account-level Z-score
+    df['account_z_score'] = df.groupby('account_number')['amount'].transform(
+        lambda x: (x - x.mean()) / x.std()
+    )
+    
+    # Select features for model
+    feature_cols = ['log_amount', 'is_round_number', 'is_off_hours', 
+                    'is_weekend', 'account_z_score', 'benfords_deviation']
+    X = df[feature_cols].fillna(0)
+    
+    # Scale features
+    scaler = StandardScaler()
+    X_scaled = scaler.fit_transform(X)
+    
+    # Isolation Forest
+    iso_forest = IsolationForest(
+        contamination=contamination,
+        n_estimators=200,
+        random_state=42
+    )
+    
+    df['anomaly_score'] = iso_forest.fit_predict(X_scaled)
+    df['anomaly_raw_score'] = iso_forest.score_samples(X_scaled)
+    df['is_anomaly'] = (df['anomaly_score'] == -1)
+    
+    # Return anomalies sorted by risk
+    anomalies = df[df['is_anomaly']].sort_values('anomaly_raw_score')
+    print(f"Flagged {len(anomalies)} anomalies out of {len(df)} transactions ({len(anomalies)/len(df):.1%})")
+    
+    return anomalies[['transaction_id', 'date', 'account_number', 
+                       'amount', 'description', 'posted_by',
+                       'is_off_hours', 'is_round_number', 'anomaly_raw_score']]
 ```
 
-#### Monte Carlo Cash Flow Simulation
+### MLOps for Finance Models
+
+**Retraining Triggers for Finance:**
+| Trigger | Detection | Action |
+|---|---|---|
+| Period end | Monthly cron | Retrain with latest close data |
+| MAPE > 10% | Monitor forecast accuracy | Immediate retrain + alert |
+| Budget revision | Finance team input | Retrain with new budget baseline |
+| M&A / divestiture | ERP entity change | Full data refresh + retrain |
+| Significant market event | Macro indicator threshold | Retrain + manual review |
+
+**Model Monitoring Dashboard:**
 ```python
-import numpy as np
-import pandas as pd
-
-def monte_carlo_cashflow(
-    base_revenue: float,
-    growth_mu: float,      # Expected annual growth rate
-    growth_sigma: float,   # Standard deviation of growth
-    margin: float,         # Operating margin
-    margin_sigma: float,   # Margin volatility
-    n_simulations: int = 10_000,
-    n_years: int = 5
-) -> pd.DataFrame:
+def track_forecast_accuracy(actuals: pd.Series, forecasts: pd.Series) -> dict:
     """
-    Simulate future cash flows with uncertainty.
-    Returns distribution of FCF outcomes.
+    Track forecast accuracy metrics against finance team targets.
+    Target: Revenue +/-5%, Expenses +/-3%
     """
-    results = []
+    from sklearn.metrics import (mean_absolute_error, 
+                                  mean_absolute_percentage_error,
+                                  mean_squared_error)
     
-    for _ in range(n_simulations):
-        revenue = base_revenue
-        sim_fcf = []
-        
-        for year in range(n_years):
-            growth = np.random.normal(growth_mu, growth_sigma)
-            sim_margin = np.random.normal(margin, margin_sigma)
-            sim_margin = max(0, sim_margin)  # Floor at 0
-            
-            revenue *= (1 + growth)
-            fcf = revenue * sim_margin
-            sim_fcf.append(fcf)
-        
-        results.append(sim_fcf)
+    mae   = mean_absolute_error(actuals, forecasts)
+    mape  = mean_absolute_percentage_error(actuals, forecasts)
+    rmse  = mean_squared_error(actuals, forecasts, squared=False)
     
-    df = pd.DataFrame(results, columns=[f'Year_{i+1}' for i in range(n_years)])
+    # Bias (over/under forecast)
+    bias = (forecasts - actuals).mean()
+    bias_pct = bias / actuals.mean()
     
-    # Summary statistics
-    print("FCF Distribution (Year 5):")
-    print(f"  P10: ${df['Year_5'].quantile(0.10):,.0f}")
-    print(f"  P50: ${df['Year_5'].quantile(0.50):,.0f}")
-    print(f"  P90: ${df['Year_5'].quantile(0.90):,.0f}")
-    
-    return df
-
-# Example
-results = monte_carlo_cashflow(
-    base_revenue=100_000_000,
-    growth_mu=0.15,      # 15% expected growth
-    growth_sigma=0.08,   # 8% std dev
-    margin=0.20,         # 20% FCF margin
-    margin_sigma=0.05    # 5% margin volatility
-)
-```
-
----
-
-## 10. Invoice Processing & Document Management
-
-### When to Use
-- Extracting structured data from PDF invoices
-- Matching invoices to purchase orders (3-way match)
-- Organizing and exporting invoice data to CSV or accounting systems
-- Detecting duplicate invoices or overbilling
-
-### Invoice Extraction Pipeline
-
-```python
-import pdfplumber
-import re
-import pandas as pd
-from dataclasses import dataclass, field
-from typing import Optional
-
-@dataclass
-class Invoice:
-    vendor_name: str = ""
-    invoice_number: str = ""
-    invoice_date: Optional[str] = None
-    due_date: Optional[str] = None
-    subtotal: Optional[float] = None
-    tax: Optional[float] = None
-    total: Optional[float] = None
-    currency: str = "USD"
-    line_items: list = field(default_factory=list)
-    raw_text: str = ""
-
-def extract_invoice(pdf_path: str) -> Invoice:
-    invoice = Invoice()
-    
-    with pdfplumber.open(pdf_path) as pdf:
-        for page in pdf.pages:
-            text = page.extract_text() or ""
-            invoice.raw_text += text
-            
-            # Extract invoice number
-            inv_match = re.search(r'Invoice\s*#?:?\s*([A-Z0-9\-]+)', text, re.IGNORECASE)
-            if inv_match and not invoice.invoice_number:
-                invoice.invoice_number = inv_match.group(1)
-            
-            # Extract total amount
-            total_match = re.search(r'Total\s*(?:Amount)?\s*:?\s*\$?([\d,]+\.\d{2})', text, re.IGNORECASE)
-            if total_match and not invoice.total:
-                invoice.total = float(total_match.group(1).replace(',', ''))
-            
-            # Extract date
-            date_match = re.search(r'(?:Invoice\s+)?Date:?\s*(\d{1,2}[/-]\d{1,2}[/-]\d{2,4})', text, re.IGNORECASE)
-            if date_match and not invoice.invoice_date:
-                invoice.invoice_date = date_match.group(1)
-            
-            # Extract table data (line items)
-            tables = page.extract_tables()
-            for table in tables:
-                invoice.line_items.extend(table)
-    
-    return invoice
-
-def invoices_to_csv(invoice_list: list, output_path: str):
-    rows = []
-    for inv in invoice_list:
-        rows.append({
-            'vendor': inv.vendor_name,
-            'invoice_number': inv.invoice_number,
-            'date': inv.invoice_date,
-            'due_date': inv.due_date,
-            'subtotal': inv.subtotal,
-            'tax': inv.tax,
-            'total': inv.total,
-            'currency': inv.currency
-        })
-    pd.DataFrame(rows).to_csv(output_path, index=False)
-    print(f"Exported {len(rows)} invoices to {output_path}")
-```
-
-### 3-Way Match Logic
-```python
-def three_way_match(
-    invoice: dict,
-    purchase_order: dict,
-    receiving_report: dict,
-    tolerance_pct: float = 0.02  # 2% tolerance
-) -> dict:
-    """
-    Validate invoice against PO and receiving report.
-    Returns match result with specific discrepancies.
-    """
-    result = {
-        'invoice_id': invoice['invoice_number'],
-        'po_number': purchase_order['po_number'],
-        'passed': True,
-        'discrepancies': []
+    metrics = {
+        'MAE':       f"${mae:,.0f}",
+        'MAPE':      f"{mape:.2%}",
+        'RMSE':      f"${rmse:,.0f}",
+        'Bias':      f"${bias:,.0f} ({bias_pct:+.2%})",
+        'On Target': mape <= 0.05,  # Finance team target: +/-5%
     }
     
-    # Price match: Invoice price vs PO price
-    price_variance = abs(invoice['unit_price'] - purchase_order['unit_price'])
-    price_tolerance = purchase_order['unit_price'] * tolerance_pct
-    if price_variance > price_tolerance:
-        result['discrepancies'].append({
-            'type': 'PRICE_MISMATCH',
-            'invoice': invoice['unit_price'],
-            'po': purchase_order['unit_price'],
-            'variance': price_variance
-        })
-        result['passed'] = False
-    
-    # Quantity match: Invoice qty vs Receiving qty
-    if invoice['quantity'] != receiving_report['quantity_received']:
-        result['discrepancies'].append({
-            'type': 'QUANTITY_MISMATCH',
-            'invoice': invoice['quantity'],
-            'received': receiving_report['quantity_received']
-        })
-        result['passed'] = False
-    
-    # Amount match: Invoice total vs calculated
-    expected_total = invoice['unit_price'] * invoice['quantity']
-    if abs(invoice['total'] - expected_total) > 0.01:
-        result['discrepancies'].append({
-            'type': 'TOTAL_CALCULATION_ERROR',
-            'invoice_total': invoice['total'],
-            'expected_total': expected_total
-        })
-        result['passed'] = False
-    
-    return result
+    return metrics
 ```
 
 ---
 
-## 11. LLM-Assisted Financial Analysis
+## 10. Invoice & Document Management
 
 ### When to Use
-- Summarizing earnings transcripts or 10-K filings
-- Extracting specific financial metrics from unstructured documents
-- Generating narrative commentary from structured financial data
-- Building a RAG system over financial document repositories
+- Organizing a folder of invoices for tax preparation
+- Standardizing invoice filenames and folder structure
+- Extracting key data (vendor, date, amount) from PDFs and images
+- Creating an invoice summary CSV for accountants
+- Setting up ongoing automated invoice organization
+- Reconciling expenses for reimbursement or AP processing
 
-### RAG for Financial Documents
+### Invoice Organization Workflow
 
-```python
-from openai import OpenAI
-import chromadb
-import pdfplumber
+**Step 1: Scan the Folder**
+```bash
+# Find all invoice-related files
+find . -type f \( -name "*.pdf" -o -name "*.jpg" -o -name "*.png" \) -print
+```
+Report: total count, file types, date range, current organization.
 
-client = OpenAI()
+**Step 2: Extract Information from Each File**
 
-# Step 1: Index financial documents
-def index_financial_docs(doc_paths: list[str], collection_name: str):
-    chroma = chromadb.Client()
-    collection = chroma.create_collection(collection_name)
-    
-    documents = []
-    metadatas = []
-    ids = []
-    
-    for i, path in enumerate(doc_paths):
-        with pdfplumber.open(path) as pdf:
-            for j, page in enumerate(pdf.pages):
-                text = page.extract_text() or ""
-                if len(text) > 100:  # Skip near-empty pages
-                    documents.append(text)
-                    metadatas.append({'source': path, 'page': j+1})
-                    ids.append(f"doc_{i}_page_{j}")
-    
-    collection.add(documents=documents, metadatas=metadatas, ids=ids)
-    return collection
+From PDFs (text extraction):
+- Look for: `Invoice Date:`, `Date:`, `Issued:`
+- Look for: `Invoice #:`, `Invoice Number:`
+- Company name (usually at top)
+- `Amount Due:`, `Total:`, `Amount:`
+- `Description:`, `Service:`, `Product:`
 
-# Step 2: Query with financial context
-def query_financial_docs(
-    question: str,
-    collection,
-    n_results: int = 5
-) -> str:
-    results = collection.query(
-        query_texts=[question],
-        n_results=n_results
-    )
-    
-    context = "\n\n---\n\n".join(results['documents'][0])
-    sources = [f"{m['source']}, p.{m['page']}" for m in results['metadatas'][0]]
-    
-    response = client.chat.completions.create(
-        model="gpt-4o",
-        messages=[
-            {"role": "system", "content": 
-             "You are a financial analyst. Answer questions based solely on "
-             "the provided financial documents. Cite specific figures and sections."},
-            {"role": "user", "content": 
-             f"Context:\n{context}\n\nQuestion: {question}"}
-        ]
-    )
-    
-    answer = response.choices[0].message.content
-    return f"{answer}\n\nSources: {'; '.join(sources)}"
+From images: Read visible text, identify vendor at top, find date and total.
+
+Fallback: Use filename clues; check file modification date; flag for review.
+
+**Step 3: Standardized Filename Format**
+```
+YYYY-MM-DD Vendor - Invoice - Description.ext
+
+Examples:
+2024-03-15 Adobe - Invoice - Creative Cloud.pdf
+2024-01-10 Amazon - Receipt - Office Supplies.pdf
+2023-12-01 Stripe - Invoice - Monthly Payment Processing.pdf
 ```
 
-### Narrative Generator from Financial Data
-
-```python
-def generate_variance_commentary(
-    variance_data: dict,
-    client: OpenAI
-) -> str:
-    """
-    Generate professional variance commentary from structured data.
-    """
-    prompt = f"""
-    Generate professional CFO-level commentary for this budget vs. actual variance:
-    
-    Period: {variance_data['period']}
-    Revenue: Actual ${variance_data['actual_revenue']:,.0f} vs Budget ${variance_data['budget_revenue']:,.0f} 
-             (${variance_data['revenue_variance']:+,.0f}, {variance_data['revenue_pct']:+.1f}%)
-    Operating Expenses: Actual ${variance_data['actual_opex']:,.0f} vs Budget ${variance_data['budget_opex']:,.0f}
-             (${variance_data['opex_variance']:+,.0f}, {variance_data['opex_pct']:+.1f}%)
-    
-    Key drivers provided:
-    {variance_data.get('drivers', 'Not specified')}
-    
-    Requirements:
-    - 3-4 sentences maximum
-    - State what/why/so-what for each significant variance
-    - Use specific dollar amounts
-    - Professional finance tone
-    - Do not use passive voice
-    """
-    
-    response = client.chat.completions.create(
-        model="gpt-4o-mini",
-        messages=[{"role": "user", "content": prompt}]
-    )
-    
-    return response.choices[0].message.content
-```
-
----
-
-## Quick Reference
-
-### Decision Routing
-```
-Financial statement question → Section 1
-Journal entry needed → Section 2
-Reconciliation issue → Section 3
-Close management → Section 4
-Variance explanation → Section 5
-Audit / SOX → Section 6
-Market data / investment → Section 7
-Data pipeline / ETL → Section 8
-Forecasting / ML → Section 9
-Invoice processing → Section 10
-LLM on financial docs → Section 11
-```
-
-### Common Finance Formulas
+**Step 4: Organization Structures**
 
 ```
-Free Cash Flow = Operating CF − CapEx
-EBITDA = Operating Income + D&A
-Enterprise Value = Market Cap + Net Debt
-Working Capital = Current Assets − Current Liabilities
-ROIC = NOPAT / (Total Equity + Total Debt − Cash)
-CAGR = (End Value / Start Value)^(1/Years) − 1
-Break-even = Fixed Costs / (Price − Variable Cost per Unit)
-Payback Period = Initial Investment / Annual CF
-NPV = Σ CF_t / (1+r)^t − Initial Investment
-IRR = Rate where NPV = 0
+# By Vendor (Simple)
+Invoices/
+├-- Adobe/
+├-- Amazon/
+└-- Google/
+
+# By Year and Category (Tax-Friendly — recommended)
+Invoices/
+├-- 2024/
+│   ├-- Software/
+│   ├-- Hardware/
+│   ├-- Services/
+│   ├-- Travel/
+│   └-- Office/
+└-- 2025/
+    └-- ...
+
+# By Quarter (Detailed Tracking)
+Invoices/
+├-- 2024/
+│   ├-- Q1/
+│   │   ├-- Software/
+│   │   └-- Travel/
+│   └-- Q2/
+
+# By Tax Category (Accountant-Ready)
+Invoices/
+├-- Deductible/
+│   ├-- Software/
+│   └-- Professional-Services/
+├-- Partially-Deductible/
+│   └-- Meals-Travel/
+└-- Personal/
 ```
 
-### Materiality Guidelines (GAAP)
-| Context | Common Benchmark |
+**Step 5: Generate Invoice Summary CSV**
+```csv
+Date,Vendor,Invoice Number,Description,Amount,Category,Tax Deductible,File Path
+2024-03-15,Adobe,INV-12345,Creative Cloud,52.99,Software,Yes,Invoices/2024/Software/Adobe/...
+2024-03-10,Amazon,123-4567890,Office Supplies,127.45,Office,Yes,Invoices/2024/Office/Amazon/...
+2024-02-28,Delta Airlines,TICKET-789,Flight NYC-SFO,342.00,Travel,Partial,Invoices/2024/Travel/...
+```
+
+**Step 6: Completion Summary**
+```
+Processed:    [X] invoices
+Date range:   [earliest] to [latest]
+Total amount: $[sum]
+Vendors:      [Y] unique vendors
+
+Files needing review: [list files where info couldn't be extracted]
+Next steps:
+1. Review invoice-summary.csv
+2. Check Needs-Review/ folder
+3. Import CSV into accounting software
+4. Keep originals for 7 years (standard audit period)
+```
+
+### Special Cases
+
+| Situation | Resolution |
 |---|---|
-| Individual financial statement items | 5% of pre-tax income or 0.5% of revenue |
-| Balance sheet items | 0.5% of total assets |
-| Audit planning materiality | 0.5%–1% of revenue or 5% of pre-tax income |
-| Performance materiality | 75% of planning materiality |
-| Clearly trivial threshold | 3%–5% of planning materiality |
+| Missing date/vendor | Use file modification date; flag in Needs-Review/ folder |
+| Duplicate invoices | Compare file hashes; keep highest quality version; note in CSV |
+| Multi-page invoices | Merge PDFs if needed; use consistent naming for parts |
+| Non-standard formats | Extract what's possible; flag for review |
+| Gmail "invoice.pdf" downloads | Read each file to extract real vendor/date; rename from content |
+
+### Pro Tips
+1. Organize monthly, not annually — far less work per session
+2. Save all invoices to one folder before batch processing
+3. Keep originals before reorganizing (copy, don't move)
+4. Tag deductibility at time of receipt, not at year-end
+5. Include amounts in CSV for budget tracking
+6. Retain receipts for 7 years (standard IRS audit window)
+7. For subscriptions: create a recurring invoice tracker in the CSV
 
 ---
 
-## Metadata
+## 11. Unique Perplexity Computer Capabilities
 
-**Skill version:** 1.0
-**Author:** get-zeked
-**Source skills merged:**
-- Perplexity Computer: finance-financial-statements, finance-journal-entry-prep, finance-reconciliation, finance-close-management, finance-variance-analysis, finance-audit-support, finance-markets, investment-research
-- Claude Code (obra/superpowers): financial-analyst, senior-data-engineer, senior-data-scientist, senior-ml-engineer, invoice-organizer
-**License:** MIT
+These capabilities are available only through Perplexity Computer's connected tools and are not available in Claude Code or other environments.
+
+### Real-Time & Historical Market Data
+```
+finance_quotes        → Live prices, P/E, market cap for stocks/crypto/ETFs
+finance_ohlcv_histories → Historical OHLCV data as CSV (no web search needed)
+finance_market_gainers/losers/most_active → Today's movers
+finance_market_sentiment → Aggregate market mood (bullish/bearish/neutral)
+finance_ticker_sentiment → Bull/bear analysis per ticker
+```
+
+### SEC Filings & Earnings Transcripts
+```
+finance_earnings      → Full earnings call transcripts with management Q&A
+                        Primary source for:
+                        - Forward guidance (revenue ranges, margin targets)
+                        - Non-GAAP metrics (adjusted EBITDA, organic growth)
+                        - Company-specific KPIs (ARR, GMV, take rate, churn)
+                        - Beat/miss vs prior guidance
+finance_financials    → Standardized income statement, balance sheet, CF
+                        Direct from SEC filings, structured format
+finance_segments      → Revenue by segment, unit economics, operating KPIs
+finance_estimates     → Analyst consensus forward estimates
+finance_analyst_research → Price targets, rating changes, upgrades/downgrades
+```
+
+### Congressional Stock Activity
+```
+finance_list_politicians    → All tracked politicians with stock activity
+finance_politician_holdings → A specific politician's full portfolio
+finance_politician_trades   → Recent congressional transactions
+finance_ticker_politician_holders → Politicians holding a specific stock
+```
+
+### Advanced Raw API (finance_massive)
+```
+Options chains:     /v3/snapshot/options/{ticker}
+Tick-level trades:  /v3/trades/{ticker}
+Treasury yields:    /fed/v1/treasury-yields
+CPI/Inflation:      /fed/v1/inflation
+Labor market:       /fed/v1/labor-market
+RSI indicator:      /v1/indicators/rsi/{ticker}
+Index aggregates:   /v2/aggs/ticker/{index}/range/{mult}/{timespan}/{from}/{to}
+```
+
+### User Watchlist
+```
+finance_watchlist_fetch → Retrieve user's personal watchlist/portfolio
+```
+
+### Citation Protocol
+When presenting data from any finance tool, always cite the source:
+```
+https://perplexity.ai/finance/<TICKER>
+Example: "Apple's revenue grew 6% YoY ([Perplexity Finance – AAPL](https://perplexity.ai/finance/AAPL))"
+```
 
 ---
 
-## Appendix: Finance Abbreviations
+## 12. Quick-Start Decision Guide
 
-| Abbreviation | Full Term |
+Use this to identify which section to apply:
+
+| User Request | Section to Use | Key Tools/Templates |
+|---|---|---|
+| "Prepare income statement" | §1 Financial Statements | IS template, ratio table |
+| "Calculate P/E ratio" | §1 Financial Statements | Valuation multiples table |
+| "Build a DCF model" | §1 Financial Statements | DCF workflow + §7 finance_financials |
+| "Record a payroll entry" | §2 Journal Entries | Payroll JE template |
+| "Accrue unbilled expenses" | §2 Journal Entries | Accrual JE template |
+| "Reconcile the bank account" | §3 Reconciliation | Bank rec template |
+| "Substantiate balance sheet" | §3 Reconciliation | BS substantiation checklist |
+| "Plan the monthly close" | §4 Close Management | 15-day calendar + task tracker |
+| "Explain why we missed budget" | §5 Variance Analysis | Waterfall template + decomposition |
+| "Test SOX controls" | §6 Audit Support | Control test workpaper + sample sizes |
+| "Get Apple's stock price" | §7 Markets | finance_quotes (NOT search_web) |
+| "Find Tesla's earnings transcript" | §7 Markets | finance_earnings |
+| "Research an investment" | §7 Markets | Investment thesis template |
+| "Build a GL data pipeline" | §8 Data Engineering | dbt models + Airflow DAG |
+| "Forecast next quarter revenue" | §9 ML & Forecasting | XGBoost forecast + scenarios |
+| "Detect suspicious transactions" | §9 ML & Forecasting | Isolation Forest code |
+| "Organize invoices for taxes" | §10 Invoice Management | Workflow + CSV template |
+| "Get options chain data" | §11 Unique Capabilities | finance_massive |
+| "What politicians own NVDA?" | §11 Unique Capabilities | finance_ticker_politician_holders |
+
+---
+
+## Appendix A: Financial Accounts Quick Reference
+
+### Account Number Conventions (Typical 5-digit CoA)
+```
+1XXXX — Assets
+  10XXX — Cash & Cash Equivalents
+  11XXX — Accounts Receivable
+  12XXX — Inventories
+  13XXX — Prepaid Expenses & Other Current Assets
+  14XXX — Fixed Assets (Gross)
+  15XXX — Accumulated Depreciation (contra)
+  16XXX — Intangibles & Goodwill
+  19XXX — Other Non-Current Assets
+
+2XXXX — Liabilities
+  20XXX — Accounts Payable
+  21XXX — Accrued Liabilities
+  22XXX — Deferred Revenue
+  23XXX — Short-term Debt
+  24XXX — Long-term Debt
+  25XXX — Lease Liabilities
+  29XXX — Other Liabilities
+
+3XXXX — Equity
+  30XXX — Common Stock & APIC
+  31XXX — Retained Earnings
+  32XXX — AOCI
+  33XXX — Treasury Stock (contra)
+
+4XXXX — Revenue
+  40XXX — Product Revenue
+  41XXX — Service Revenue
+  42XXX — Subscription Revenue
+  43XXX — Other Revenue
+
+5XXXX — Cost of Revenue
+  50XXX — COGS — Product
+  51XXX — COGS — Service
+
+6XXXX — Operating Expenses
+  60XXX — Research & Development
+  61XXX — Sales & Marketing
+  62XXX — General & Administrative
+  63XXX — Depreciation & Amortization
+
+7XXXX — Other Income/Expense
+  70XXX — Interest Income
+  71XXX — Interest Expense
+  72XXX — Other Non-Operating
+
+8XXXX — Tax
+  80XXX — Income Tax Expense
+  81XXX — Deferred Tax
+```
+
+---
+
+## Appendix B: Common Financial Abbreviations
+
+| Abbreviation | Full Name |
 |---|---|
-| CAGR | Compound Annual Growth Rate |
-| CAC | Customer Acquisition Cost |
-| CapEx | Capital Expenditures |
-| COSO | Committee of Sponsoring Organizations |
-| DCF | Discounted Cash Flow |
-| DPO | Days Payable Outstanding |
-| DSO | Days Sales Outstanding |
-| EBITDA | Earnings Before Interest, Taxes, Depreciation, and Amortization |
-| ETL | Extract, Transform, Load |
-| EV | Enterprise Value |
+| EBITDA | Earnings Before Interest, Taxes, Depreciation & Amortization |
 | FCF | Free Cash Flow |
+| NWC | Net Working Capital |
+| WACC | Weighted Average Cost of Capital |
+| CAPM | Capital Asset Pricing Model |
+| DCF | Discounted Cash Flow |
+| LTM | Last Twelve Months |
+| NTM | Next Twelve Months |
+| YTD | Year to Date |
+| MTD | Month to Date |
+| QTD | Quarter to Date |
+| YoY | Year over Year |
+| QoQ | Quarter over Quarter |
+| MoM | Month over Month |
+| AR | Accounts Receivable |
+| AP | Accounts Payable |
+| DSO | Days Sales Outstanding |
+| DPO | Days Payable Outstanding |
+| DIO | Days Inventory Outstanding |
+| CCC | Cash Conversion Cycle |
+| NIM | Net Interest Margin |
+| ROE | Return on Equity |
+| ROA | Return on Assets |
+| ROIC | Return on Invested Capital |
+| SBC | Stock-Based Compensation |
+| CapEx | Capital Expenditures |
+| D&A | Depreciation & Amortization |
 | GAAP | Generally Accepted Accounting Principles |
-| GL | General Ledger |
-| IQR | Interquartile Range |
-| IRR | Internal Rate of Return |
+| ASC | Accounting Standards Codification |
+| PCAOB | Public Company Accounting Oversight Board |
+| SOX | Sarbanes-Oxley Act |
+| MW | Material Weakness |
+| SD | Significant Deficiency |
+| PBC | Prepared by Client |
+| ETL | Extract, Transform, Load |
+| ELT | Extract, Load, Transform |
+| dbt | Data Build Tool |
+| MAPE | Mean Absolute Percentage Error |
+| PSI | Population Stability Index |
+| ARR | Annual Recurring Revenue |
+| MRR | Monthly Recurring Revenue |
+| CAC | Customer Acquisition Cost |
 | LTV | Lifetime Value |
 | NRR | Net Revenue Retention |
 | GMV | Gross Merchandise Value |
